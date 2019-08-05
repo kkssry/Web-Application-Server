@@ -50,13 +50,26 @@ public class RequestHandler extends Thread {
                 log.debug("body : {}", body);
                 User user = createUser(body);
                 log.debug(user.toString());
+
+                DataOutputStream dos = new DataOutputStream(out);
+                response302Header(dos, "/index.html");
+
+            } else {
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(Paths.get("./webapp" + url));
+                response200Header(dos, body.length);
+                responseBody(dos, body);
             }
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
 
-
-            DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = Files.readAllBytes(Paths.get("./webapp" + url));
-            response200Header(dos, body.length);
-            responseBody(dos, body);
+    private void response302Header(DataOutputStream dos, String url) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 FOUND \r\n");
+            dos.writeBytes("Location: " + url);
+            dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
