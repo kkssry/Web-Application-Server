@@ -5,6 +5,7 @@ import org.junit.Test;
 import util.HttpRequestUtils;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,5 +54,11 @@ public class RequestHandlerTest {
         while ((line = bf.readLine()) != null) {
             System.out.println(line);
         }
+    }
+
+    @Test
+    public void 맵에키가없을때반응() {
+        Map<String,String> map = new HashMap<>();
+        System.out.println(map.get("a"));
     }
 }
