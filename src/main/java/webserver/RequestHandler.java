@@ -88,6 +88,7 @@ public class RequestHandler extends Thread {
             } else if (url.startsWith("/users/list")) {
                 Map<String, String> cookies = new HashMap<>();
                 String sentence;
+
                 while (!(sentence = br.readLine()).equals("")) {
                     if (sentence.startsWith("Cookie")) {
                         cookies = HttpRequestUtils.parseCookies(sentence.substring(7));
@@ -101,7 +102,7 @@ public class RequestHandler extends Thread {
                 }
 
                 // 쿠키 true 면 리스트 보여주는 페이지
-                if (cookies.get("logined").equals("true")) {
+                if (cookies.get("logined") != null && cookies.get("logined").equals("true")) {
                     BufferedReader fr = new BufferedReader(new FileReader("./webapp/user/list.html"));
 //                    List<User> users = new ArrayList<>(DataBase.findAll());
 
@@ -123,14 +124,18 @@ public class RequestHandler extends Thread {
                             sb.append(fileLine);
                         }
                     }
-
                     DataOutputStream dos = new DataOutputStream(out);
                     response200Header(dos, sb.toString().getBytes().length);
                     responseBody(dos, sb.toString().getBytes());
+                } else {
+                    // 아니면 로그인 페이지
+                    DataOutputStream dos = new DataOutputStream(out);
+                    byte[] contents = Files.readAllBytes(Paths.get("./webapp/user/login.html"));
+                    response401Header(dos, contents.length);
+                    responseBody(dos, contents);
                 }
 
 
-                // 아니면 로그인 페이지
 
 
             } else {
@@ -149,6 +154,7 @@ public class RequestHandler extends Thread {
             dos.writeBytes("HTTP/1.1 401 Unauthorized \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("Set-Cookie: logined = false; Path = / \r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
