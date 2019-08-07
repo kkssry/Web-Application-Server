@@ -35,8 +35,15 @@ public class RequestHandler extends Thread {
 
             String url = br.readLine().split(" ")[1];
 
+            if (url.startsWith("/css")) {
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] contents = Files.readAllBytes(Paths.get("./webapp" + url));
+                response200HeaderWithCss(dos, contents.length);
+                responseBody(dos, contents);
+            }
+
             //get 방식
-            if (url.startsWith("/users/?")) {
+            else if (url.startsWith("/users/?")) {
                 String queryString = url.split("\\?")[1];
                 User user = createUser(queryString);
                 log.debug(user.toString());
@@ -136,14 +143,23 @@ public class RequestHandler extends Thread {
                 }
 
 
-
-
             } else {
                 DataOutputStream dos = new DataOutputStream(out);
                 byte[] body = Files.readAllBytes(Paths.get("./webapp" + url));
                 response200Header(dos, body.length);
                 responseBody(dos, body);
             }
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void response200HeaderWithCss(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/css; charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
