@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
 import util.IOUtils;
 import webserver.request.HttpRequest;
+import webserver.request.HttpRequestGenerator;
+import webserver.response.HttpResponse;
 
 import java.io.*;
 import java.net.Socket;
@@ -32,7 +34,11 @@ public class RequestHandler extends Thread {
              OutputStream out = connection.getOutputStream()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 
-            HttpRequest httpRequest = new HttpRequest(in);
+            HttpRequest httpRequest = HttpRequestGenerator.createHttpRequest(in);
+            HttpResponse httpResponse = new HttpResponse(out);
+
+            Dispatcher dispatcher = new Dispatcher(httpRequest, httpResponse);
+
             String url = httpRequest.getPath();
 
             if (url.startsWith("/css")) {

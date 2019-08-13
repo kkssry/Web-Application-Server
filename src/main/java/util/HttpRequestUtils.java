@@ -1,16 +1,21 @@
 package util;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
+import webserver.request.RequestBody;
+import webserver.request.RequestHeader;
+import webserver.request.RequestLine;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-
 public class HttpRequestUtils {
     /**
-     * @param queryString은
-     *            URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
+     * @param queryString은 URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
      * @return
      */
     public static Map<String, String> parseQueryString(String queryString) {
@@ -18,8 +23,7 @@ public class HttpRequestUtils {
     }
 
     /**
-     * @param 쿠키
-     *            값은 name1=value1; name2=value2 형식임
+     * @param 쿠키 값은 name1=value1; name2=value2 형식임
      * @return
      */
     public static Map<String, String> parseCookies(String cookies) {
@@ -51,6 +55,26 @@ public class HttpRequestUtils {
 
     public static Pair parseHeader(String header) {
         return getKeyValue(header, ": ");
+    }
+
+    public static RequestHeader createRequestHeader(BufferedReader br) throws IOException {
+        String line;
+        Map<String, String> headers = new HashMap<>();
+        while (!(line = br.readLine()).equals("")) {
+            String[] header = line.split(": ");
+            headers.put(header[0], header[1]);
+        }
+        return new RequestHeader(headers);
+    }
+
+    public static RequestBody crateRequestBody(BufferedReader br, int contentLength) throws IOException {
+        String body = IOUtils.readData(br, contentLength);
+        return new RequestBody(body);
+    }
+
+    public static RequestLine createRequestLine(BufferedReader br) throws IOException {
+        String[] requestLine = br.readLine().split(" ");
+        return new RequestLine(requestLine[0], requestLine[1], requestLine[2]);
     }
 
     public static class Pair {

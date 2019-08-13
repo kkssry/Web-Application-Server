@@ -10,26 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest {
-    private BufferedReader br;
-    private Map<String, String> headers = new HashMap<>();
     private RequestLine requestLine;
+    private RequestHeader requestHeader;
+    private RequestBody requestBody;
 
-    public HttpRequest(InputStream in) throws IOException {
-        this.br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-        requestLine = new RequestLine(br.readLine());
-        initHeaders();
-    }
-
-    public void initHeaders() throws IOException {
-        String line;
-        while (!(line = br.readLine()).equals("")) {
-            String[] header = line.split(": ");
-            headers.put(header[0], header[1]);
-        }
+    public HttpRequest(RequestLine requestLine, RequestHeader requestHeader, RequestBody requestBody) {
+        this.requestLine = requestLine;
+        this.requestHeader = requestHeader;
+        this.requestBody = requestBody;
     }
 
     public String getHeader(String key) {
-        return headers.get(key);
+        return requestHeader.getHeaderValue(key);
     }
 
     public String getMethod() throws IOException {
