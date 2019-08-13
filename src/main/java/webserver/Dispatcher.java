@@ -11,4 +11,8 @@ public class Dispatcher {
         this.httpRequest = httpRequest;
         this.httpResponse = httpResponse;
     }
+
+    public void dispatch() {
+        HandlerMapping.findController(httpRequest.getPath()).service(httpRequest, httpResponse);
+    }
 }

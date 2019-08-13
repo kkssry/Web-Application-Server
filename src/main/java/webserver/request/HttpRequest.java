@@ -1,14 +1,5 @@
 package webserver.request;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 public class HttpRequest {
     private RequestLine requestLine;
     private RequestHeader requestHeader;
@@ -24,15 +15,15 @@ public class HttpRequest {
         return requestHeader.getHeaderValue(key);
     }
 
-    public String getMethod() throws IOException {
+    public String getMethod() {
         return requestLine.getMethod();
     }
 
-    public String getPath() throws IOException {
+    public String getPath() {
         return requestLine.getUrl();
     }
 
-    public String getParameter(String key) {
-        return requestLine.getParam(key);
+    public String getBody() {
+        return requestBody.getBody();
     }
 }

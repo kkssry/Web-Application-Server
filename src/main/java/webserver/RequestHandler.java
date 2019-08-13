@@ -9,6 +9,7 @@ import util.IOUtils;
 import webserver.request.HttpRequest;
 import webserver.request.HttpRequestGenerator;
 import webserver.response.HttpResponse;
+import webserver.response.HttpResponseGenerator;
 
 import java.io.*;
 import java.net.Socket;
@@ -35,9 +36,10 @@ public class RequestHandler extends Thread {
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 
             HttpRequest httpRequest = HttpRequestGenerator.createHttpRequest(in);
-            HttpResponse httpResponse = new HttpResponse(out);
+            HttpResponse httpResponse = HttpResponseGenerator.createHttpResponse(out);
 
             Dispatcher dispatcher = new Dispatcher(httpRequest, httpResponse);
+            dispatcher.dispatch();
 
             String url = httpRequest.getPath();
 

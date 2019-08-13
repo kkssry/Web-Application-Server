@@ -2,6 +2,7 @@ package util;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import model.User;
 import webserver.request.RequestBody;
 import webserver.request.RequestHeader;
 import webserver.request.RequestLine;
@@ -75,6 +76,11 @@ public class HttpRequestUtils {
     public static RequestLine createRequestLine(BufferedReader br) throws IOException {
         String[] requestLine = br.readLine().split(" ");
         return new RequestLine(requestLine[0], requestLine[1], requestLine[2]);
+    }
+
+    public static User createUser(String queryString) {
+        Map<String, String> userInfo = parseQueryString(queryString);
+        return new User(userInfo.get("userId"), userInfo.get("password"), userInfo.get("name"), userInfo.get("email"));
     }
 
     public static class Pair {
