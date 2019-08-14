@@ -69,6 +69,9 @@ public class HttpRequestUtils {
     }
 
     public static RequestBody crateRequestBody(BufferedReader br, int contentLength) throws IOException {
+        if (contentLength == 0) {
+            return null;
+        }
         String body = IOUtils.readData(br, contentLength);
         return new RequestBody(body);
     }

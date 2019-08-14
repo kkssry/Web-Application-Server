@@ -3,6 +3,7 @@ package webserver;
 import org.junit.Before;
 import org.junit.Test;
 import webserver.request.HttpRequest;
+import webserver.request.HttpRequestGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,11 +17,12 @@ public class HttpRequestTest {
             "Accept: */*\n" +
             "\n";
 
+
     private HttpRequest httpRequest;
 
     @Before
     public void setUp() throws Exception {
-        httpRequest = new HttpRequest(new ByteArrayInputStream(httpHeader.getBytes()));
+        httpRequest = HttpRequestGenerator.createHttpRequest(new ByteArrayInputStream(httpHeader.getBytes()));
     }
 
     @Test

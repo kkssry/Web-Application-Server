@@ -9,6 +9,9 @@ public class RequestHeader {
         this.headers = headers;
     }
     public int getContentLength() {
+        if (headers.get("Content-Length") == null) {
+            return 0;
+        }
         return Integer.parseInt(headers.get("Content-Length"));
     }
 
