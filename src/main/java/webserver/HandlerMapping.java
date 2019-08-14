@@ -1,9 +1,6 @@
 package webserver;
 
-import webserver.controller.Controller;
-import webserver.controller.CreateUserController;
-import webserver.controller.ListUserController;
-import webserver.controller.LoginController;
+import webserver.controller.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +12,7 @@ public class HandlerMapping {
         controllers.put("/users/create", new CreateUserController());
         controllers.put("/users/login", new LoginController());
         controllers.put("/users/list", new ListUserController());
+        controllers.put("/index", new HomeController());
     }
 
     public static Controller findController(String url) {
