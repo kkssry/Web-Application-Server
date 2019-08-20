@@ -1,22 +1,19 @@
 package webserver;
 
-import db.DataBase;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.HttpRequestUtils;
-import util.IOUtils;
 import webserver.request.HttpRequest;
 import webserver.request.HttpRequestGenerator;
 import webserver.response.HttpResponse;
 import webserver.response.HttpResponseGenerator;
 
-import java.io.*;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 public class RequestHandler extends Thread {
@@ -36,7 +33,6 @@ public class RequestHandler extends Thread {
 
             HttpRequest httpRequest = HttpRequestGenerator.createHttpRequest(in);
             HttpResponse httpResponse = HttpResponseGenerator.createHttpResponse(out);
-            log.debug("requestUrl : {}", httpRequest.getPath());
             Dispatcher dispatcher = new Dispatcher(httpRequest, httpResponse);
             dispatcher.dispatch();
 

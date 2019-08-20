@@ -19,10 +19,11 @@ public class HandlerMapping {
         controllers.put("/index", new HomeController());
         controllers.put("/css", new CSSController());
         controllers.put("/js", new JSController());
+        controllers.put("/font", new FontController());
+        controllers.put("/icon", new IconController());
     }
 
     public static Controller findController(String url) {
-        log.debug("찾을 컨트롤러 url : {}", url);
         for (String key : controllers.keySet()) {
             if (url.startsWith(key)) {
                 return controllers.get(key);
