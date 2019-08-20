@@ -4,12 +4,12 @@ import webserver.request.HttpRequest;
 import webserver.response.HttpResponse;
 
 public abstract class AbstractController implements Controller {
-    final static String CONTENT_TYPE = "Content-Type";
-    final static String CSS_CONTENT_TYPE = "text/css; charset=utf-8";
-    final static String HTML_CONTENT_TYPE = "text/html; charset=utf-8";
-    final static String JS_CONTENT_TYPE = "text/javascript; charset=utf-8";
-    final static String FONT_CONTENT_TYPE = "application/x-font-ttf";
-    final static String ICON_CONTENT_TYPE = "image/x-icon";
+    protected final static String CONTENT_TYPE = "Content-Type";
+    protected final static String CSS_CONTENT_TYPE = "text/css; charset=utf-8";
+    protected final static String HTML_CONTENT_TYPE = "text/html; charset=utf-8";
+    protected final static String JS_CONTENT_TYPE = "text/javascript; charset=utf-8";
+    protected final static String FONT_CONTENT_TYPE = "application/x-font-ttf";
+    protected final static String ICON_CONTENT_TYPE = "image/x-icon";
 
     @Override
     public void service(HttpRequest httpRequest, HttpResponse httpResponse) {

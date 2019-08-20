@@ -3,6 +3,9 @@ package webserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webserver.controller.*;
+import webserver.controller.user.ListUserController;
+import webserver.controller.user.LoginController;
+import webserver.controller.user.UserCreateController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +16,7 @@ public class HandlerMapping {
     private static Map<String, Controller> controllers = new HashMap<>();
 
     static {
-        controllers.put("/users/create", new CreateUserController());
+        controllers.put("/users/create", new UserCreateController());
         controllers.put("/users/login", new LoginController());
         controllers.put("/users/list", new ListUserController());
         controllers.put("/index", new HomeController());
@@ -29,7 +32,6 @@ public class HandlerMapping {
                 return controllers.get(key);
             }
         }
-        // TODO : 컨트롤러 못찾으면 페이지 구현
-        return null;
+        return new ForwardController();
     }
 }
