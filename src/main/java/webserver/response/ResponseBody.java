@@ -14,13 +14,8 @@ public class ResponseBody {
         this.body = body;
     }
 
-    public void responseBody(DataOutputStream dos) {
-        try {
-            dos.write(body, 0, body.length);
-            dos.flush();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+    public byte[] getBody() {
+        return body;
     }
 
     public String getBodyLength() {

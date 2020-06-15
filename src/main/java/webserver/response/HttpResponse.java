@@ -15,11 +15,11 @@ public class HttpResponse {
     private StatusLine statusLine;
     private ResponseHeader responseHeader;
     private ResponseBody responseBody;
-    private DataOutputStream dos;
+    private ResponseData responseData;
 
-    public HttpResponse(DataOutputStream dos) {
-        this.dos = dos;
-        responseHeader = new ResponseHeader();
+    public HttpResponse(ResponseData responseData) {
+        this.responseData = responseData;
+        this.responseHeader = new ResponseHeader();
     }
 
     private void addStatusLine(String httpVersion, HttpStatusCode statusCode) {
@@ -46,8 +46,8 @@ public class HttpResponse {
 
     private void writeResponseMessage() {
         try {
-            statusLine.addWriteStatusLine(dos);
-            responseHeader.addWriteHeader(dos);
+            responseData.addWriteStatusLine(statusLine.getVersion(), statusLine.getStatusCode());
+            responseData.addWriteHeader(responseHeader.getHeaders());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class HttpResponse {
 
         addHeader("Content-Length", responseBody.getBodyLength());
         writeResponseMessage();
-        responseBody.responseBody(dos);
+        responseData.addResponseBody(responseBody.getBody());
     }
 
     public void forwardBody(String dynamicResource) {
@@ -68,7 +68,7 @@ public class HttpResponse {
         addResponseDynamicBody(dynamicResource);
         addHeader("Content-Length", responseBody.getBodyLength());
         writeResponseMessage();
-        responseBody.responseBody(dos);
+        responseData.addResponseBody(responseBody.getBody());
     }
 
     public void addHeader(String header, String value) {

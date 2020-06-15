@@ -7,6 +7,14 @@ public class StatusLine {
     private String version;
     private HttpStatusCode statusCode;
 
+    public String getVersion() {
+        return version;
+    }
+
+    public HttpStatusCode getStatusCode() {
+        return statusCode;
+    }
+
     public StatusLine(String version, HttpStatusCode statusCode) {
         this.version = version;
         this.statusCode = statusCode;
